@@ -143,7 +143,7 @@
                                     <div class="box bg-white text-center">
                                         </br>
                                         <h1 class="font-light text-white">
-                                        <button type="button" class="btn btn-lg btn-toggle " data-toggle="button" aria-pressed="false" autocomplete="off">
+                                        <button id="my_button" type="button" class="btn btn-lg btn-toggle " data-toggle="button" aria-pressed="false" autocomplete="off">
                                             <div class="handle"></div>
                                         </button>
                                         </h1>
@@ -265,18 +265,67 @@
     <script src="{% static "js/sidebarmenu.js" %}"></script>
     <!--Custom JavaScript -->
     <script src="{% static "js/custom.min.js" %}"></script>
-    <!--This page JavaScript -->
-    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
-    <!-- Charts js Files -->
-    <script src="{% static "assets/libs/flot/excanvas.js" %}"></script>
-    <script src="{% static "assets/libs/flot/jquery.flot.js" %}"></script>
-    <script src="{% static "assets/libs/flot/jquery.flot.pie.js" %}"></script>
-    <script src="{% static "assets/libs/flot/jquery.flot.time.js" %}"></script>
-    <script src="{% static "assets/libs/flot/jquery.flot.stack.js" %}"></script>
-    <script src="{% static "assets/libs/flot/jquery.flot.crosshair.js" %}"></script>
-    <script src="{% static "assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js" %}"></script>
-    <script src="{% static "js/pages/chart/chart-page-init.js" %}"></script>
+    <!-- microgear -->
+    <script src="https://cdn.netpie.io/microgear.js"></script>
 
+    <script>
+    
+      const APPID = "ValveSmartFarm";
+      const KEY = "MJjliNMzT6ERVhJ";
+      const SECRET = "KnHKiImxu4ME4M2mClrwpiFjB";
+    
+      const ALIAS = "DigitalOUTPUT_HTML_web";  
+      const thing1 = "NodeMCU1";                                 
+    
+      function switchPress(logic){
+        //   alert(logic);
+        if(logic == '1' ){
+          microgear.chat(thing1,"ON");
+        }else if(logic == '0' ){
+          microgear.chat(thing1,"OFF");
+        }
+      }
+    
+      var microgear = Microgear.create({
+        key: KEY,
+        secret: SECRET,
+        alias : ALIAS
+      });
+    
+    //   microgear.on('message', function(topic,data) {
+    //     if(data=="ON"){
+    //       document.getElementById("Status").innerHTML =  "Load is ON.";
+    //     }else if(data=="OFF"){
+    //       document.getElementById("Status").innerHTML =  "Load is OFF."; 
+    //     }
+    //   });
+    
+      microgear.on('connected', function() {
+        microgear.setAlias(ALIAS);
+      });
+    
+      microgear.on('present', function(event) {
+        console.log(event);
+      });
+    
+      microgear.on('absent', function(event) {
+        console.log(event);
+      });
+    
+      microgear.resettoken(function(err) {
+        microgear.connect(APPID);
+      });
+
+    $(document).ready(function() {
+        $('#my_button').click(function() {
+            if($(this).attr("aria-pressed")=='true'){
+                switchPress(0);
+            }else{
+                switchPress(1);
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>
