@@ -6,7 +6,7 @@ var config_firebase = {
     storageBucket: "smart-farm-27e2b.appspot.com",
     messagingSenderId: "788362802638"
   };
-  
+
 firebase.initializeApp(config_firebase);
 var status = 0;
 var database = firebase.database();
@@ -19,30 +19,6 @@ var chartColors = {
 	purple: 'rgb(153, 102, 255)',
 	grey: 'rgb(201, 203, 207)'
 };
-
-
-// function query10data() {
-//     var send_data = new Array();
-//     var i = 0;
-//     var scoresRef = database.ref("users");
-//     scoresRef.orderByValue().limitToLast(20).on("value", function(snapshot) {
-//         if(snapshot.exists()){
-//             snapshot.forEach(function(data){
-//                 var val = data.val();
-//                 send_data.push(val.V1);
-//                 send_data.push(val.V2);
-//                 send_data.push(val.V3);
-//                 send_data.push(val.V4);
-//                 send_data.push(val.time);        
-//                 i++;
-//             })
-//         }
-//     })
-//     // console.log(i);
-//     // console.log(send_data.length)
-//     return send_data;
-// }
-
 
 var color1 = Chart.helpers.color;
 var config1 = {
@@ -83,6 +59,11 @@ var config1 = {
     ]
 	},
 	options: {
+		elements: {
+      point:{
+      	radius: 0
+      }
+    },
 		responsive: true,
 		maintainAspectRatio: true,
 		title: {
@@ -93,8 +74,8 @@ var config1 = {
 			xAxes: [{
 				type: 'realtime',
 				realtime: {
-					duration: 24*60*60000,
-					ttl: 24*67*60000,
+					duration: 6*60*60000,
+					ttl: 6*67*60000,
 					refresh: 1500,
 					delay: 0,
 					pause: false,
@@ -174,6 +155,11 @@ var config2 = {
     ]
 	},
 	options: {
+		elements: {
+      point:{
+      	radius: 0
+      }
+    },
 		responsive: true,
 		maintainAspectRatio: true,
 		title: {
@@ -184,8 +170,8 @@ var config2 = {
 			xAxes: [{
 				type: 'realtime',
 				realtime: {
-					duration: 24*60*60000,
-					ttl: 24*67*60000,
+					duration: 6*60*60000,
+					ttl: 6*67*60000,
 					refresh: 1500,
 					delay: 0,
 					pause: false,
@@ -265,6 +251,11 @@ var config3 = {
     ]
 	},
 	options: {
+		elements: {
+      point:{
+      	radius: 0
+      }
+    },
 		responsive: true,
 		maintainAspectRatio: true,
 		title: {
@@ -275,8 +266,8 @@ var config3 = {
 			xAxes: [{
 				type: 'realtime',
 				realtime: {
-					duration: 24*60*60000,
-					ttl: 24*67*60000,
+					duration: 6*60*60000,
+					ttl: 6*67*60000,
 					refresh: 1500,
 					delay: 0,
 					pause: false,
@@ -356,6 +347,11 @@ var config4 = {
     ]
 	},
 	options: {
+		elements: {
+      point:{
+      	radius: 0
+      }
+    },
 		responsive: true,
 		maintainAspectRatio: true,
 		title: {
@@ -366,8 +362,8 @@ var config4 = {
 			xAxes: [{
 				type: 'realtime',
 				realtime: {
-					duration: 24*60*60000,
-					ttl: 24*67*60000,
+					duration: 6*60*60000,
+					ttl: 6*67*60000,
 					refresh: 1500,
 					delay: 0,
 					pause: false,
@@ -408,180 +404,144 @@ var config4 = {
 	}
 };
 
-
-window.onload = function() {
-	var x = window.matchMedia("(max-width: 767px)");
-	var ctx = document.getElementById('airtempChart').getContext('2d');
-	var ctx2 = document.getElementById('airhumidChart').getContext('2d');
-	var ctx3 = document.getElementById('soiltempChart').getContext('2d');
-	var ctx4 = document.getElementById('soilhumidChart').getContext('2d');
-	if (!x.matches) {
-		ctx.canvas.height = 130;
-		ctx2.canvas.height = 130;
-		ctx3.canvas.height = 130;
-		ctx4.canvas.height = 130;
-	}else{
-		ctx.canvas.height = 300;
-		ctx2.canvas.height = 300;
-		ctx3.canvas.height = 300;
-		ctx4.canvas.height = 300;
-	}
-	window.myChart1 = new Chart(ctx, config1);
-	window.myChart2 = new Chart(ctx2, config2);
-	window.myChart3 = new Chart(ctx3, config3);
-	window.myChart4 = new Chart(ctx4, config4);
-};
-
+var x = window.matchMedia("(max-width: 767px)");
+var ctx = document.getElementById('airtempChart').getContext('2d');
+var ctx2 = document.getElementById('airhumidChart').getContext('2d');
+var ctx3 = document.getElementById('soiltempChart').getContext('2d');
+var ctx4 = document.getElementById('soilhumidChart').getContext('2d');
+if (!x.matches) {
+  ctx.canvas.height = 130;
+  ctx2.canvas.height = 130;
+  ctx3.canvas.height = 130;
+  ctx4.canvas.height = 130;
+}else{
+  ctx.canvas.height = 300;
+  ctx2.canvas.height = 300;
+  ctx3.canvas.height = 300;
+  ctx4.canvas.height = 300;
+}
+window.myChart1 = new Chart(ctx, config1);
+window.myChart2 = new Chart(ctx2, config2);
+window.myChart3 = new Chart(ctx3, config3);
+window.myChart4 = new Chart(ctx4, config4);
+  	
+function create_graph(state,node,air_temperature, air_humidity, soil_moisure, soil_temperature){
+		if(state == "py"){
+		  
+    		myChart1.data.datasets[node].data = air_temperature;
+    		myChart2.data.datasets[node].data = air_humidity;
+    		myChart3.data.datasets[node].data = soil_temperature;
+    		myChart4.data.datasets[node].data = soil_moisure;   
+		}else{
+			myChart1.data.datasets[node].data.push(air_temperature);
+			myChart2.data.datasets[node].data.push(air_humidity);
+			myChart3.data.datasets[node].data.push(soil_temperature);
+			myChart4.data.datasets[node].data.push(soil_moisure);
+		}
+  
+  	myChart1.update({
+		preservation: true
+  	});
+    myChart2.update({
+      preservation: true
+    });
+    myChart3.update({
+      preservation: true
+    });
+    myChart4.update({
+      preservation: true
+    });
+}
 var ref1 = database.ref("X");
-ref1.on("child_added", function(snapshot) {
-  var changedData = snapshot.val();
-  myChart1.data.datasets[0].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_temperature
-  });
-  myChart2.data.datasets[0].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_humidity
-  });
-  myChart3.data.datasets[0].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_temperature
-  });
-  myChart4.data.datasets[0].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_moisure
-  });
-
-  myChart1.update({
-    preservation: true
-  });
-  myChart2.update({
-    preservation: true
-  });
-  myChart3.update({
-    preservation: true
-  });
-  myChart4.update({
-    preservation: true
-  });
-});
-
-var ref2 = database.ref("node_0");
-ref2.on("child_added", function(snapshot) {
-  var changedData = snapshot.val();
-  myChart1.data.datasets[1].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_temperature
-  });
-  myChart2.data.datasets[1].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_humidity
-  });
-  myChart3.data.datasets[1].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_temperature
-  });
-  myChart4.data.datasets[1].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_moisure
-  });
-
-  myChart1.update({
-    preservation: true
-  });
-  myChart2.update({
-    preservation: true
-  });
-  myChart3.update({
-    preservation: true
-  });
-  myChart4.update({
-    preservation: true
-  });
-});
-
+ref1.orderByChild("time").limitToLast(1).on("child_added", function(snapshot) {
+  	var changedData = snapshot.val();
+  	var js_air_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_temperature
+  	}
+  	var js_air_humidity = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_humidity
+  	}
+  	var js_soil_moisure = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_moisure
+  	}
+  	var js_soil_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_temperature
+  	}
+  	create_graph("js",0, js_air_temperature, js_air_humidity, js_soil_moisure, js_soil_temperature)
+})
+var ref2 = database.ref("A");
+ref2.orderByChild("time").limitToLast(1).on("child_added", function(snapshot) {
+  	var changedData = snapshot.val();
+  	var js_air_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_temperature
+  	}
+  	var js_air_humidity = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_humidity
+  	}
+  	var js_soil_moisure = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_moisure
+  	}
+  	var js_soil_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_temperature
+  	}
+  	create_graph("js",1, js_air_temperature, js_air_humidity, js_soil_moisure, js_soil_temperature)
+})
 var ref3 = database.ref("B");
-ref3.on("child_added", function(snapshot) {
-  var changedData = snapshot.val();
-  myChart1.data.datasets[2].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_temperature
-  });
-  myChart2.data.datasets[2].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_humidity
-  });
-  myChart3.data.datasets[2].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_temperature
-  });
-  myChart4.data.datasets[2].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_moisure
-  });
-
-  myChart1.update({
-    preservation: true
-  });
-  myChart2.update({
-    preservation: true
-  });
-  myChart3.update({
-    preservation: true
-  });
-  myChart4.update({
-    preservation: true
-  });
-});
-
+ref3.orderByChild("time").limitToLast(1).on("child_added", function(snapshot) {
+  	var changedData = snapshot.val();
+  	var js_air_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_temperature
+  	}
+  	var js_air_humidity = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_humidity
+  	}
+  	var js_soil_moisure = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_moisure
+  	}
+  	var js_soil_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_temperature
+  	}
+  	create_graph("js",2, js_air_temperature, js_air_humidity, js_soil_moisure, js_soil_temperature)
+})
 var ref4 = database.ref("C");
-ref4.on("child_added", function(snapshot) {
-  var changedData = snapshot.val();
-  myChart1.data.datasets[3].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_temperature
-  });
-  myChart2.data.datasets[3].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.air_humidity
-  });
-  myChart3.data.datasets[3].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_temperature
-  });
-  myChart4.data.datasets[3].data.push({
-    x: changedData.time*1000,
-    y: changedData.data.soil_moisure
-  });
+ref4.orderByChild("time").limitToLast(1).on("child_added", function(snapshot) {
+  	var changedData = snapshot.val();
+  	var js_air_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_temperature
+  	}
+  	var js_air_humidity = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.air_humidity
+  	}
+  	var js_soil_moisure = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_moisure
+  	}
+  	var js_soil_temperature = {
+  		'x': changedData.time*1000,
+  		'y': changedData.data.soil_temperature
+  	}
+  	create_graph("js",3, js_air_temperature, js_air_humidity, js_soil_moisure, js_soil_temperature)
+})
+window.onload = function() {
+    //python send
+    create_graph("py",0, x_air_temperature, x_air_humidity, x_soil_moisure, x_soil_temperature)
+    create_graph("py",1, a_air_temperature, a_air_humidity, a_soil_moisure, a_soil_temperature)
+    create_graph("py",2, b_air_temperature, b_air_humidity, b_soil_moisure, b_soil_temperature)
+    create_graph("py",3, c_air_temperature, c_air_humidity, c_soil_moisure, c_soil_temperature)
+}
 
-
-	myChart1.update({
-	  preservation: true
-	});
-	myChart2.update({
-	  preservation: true
-	});
-	myChart3.update({
-	  preservation: true
-	});
-	myChart4.update({
-	  preservation: true
-	});
-});
-
-
-
-// var ref1 = database.ref("A");
-// ref1.on("child_added", function(snapshot) {
-//   var changedData = snapshot.val();
-//   console.log(changedData);
-//   myChart.data.datasets[1].data.push({
-//     x: changedData.time,
-//     y: changedData.data.air_humidity
-//   });
-
-//   myChart.update({
-//     preservation: true
-//   });
-// });
 

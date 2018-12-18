@@ -2,13 +2,39 @@ html{
     background: #eeeeee;
 }
 
-.footbar, .mobileindex, .page-title2, .plant {
+.footbar, .mobileindex, .page-title2, .plant, .delete-bar,#search_plant {
     display: none;
 }
 .comment-widgets .comment-row{
     margin:0;
 }
+#search-dropdown-plant {
+    padding: 10px;
+    margin-top: -6px;
+    border: 0;
+    border-radius: 0;
+    background: #f1f1f1;
+}
+.plant-card{
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
 @media (max-width: 767px){
+    #search_plant {
+        display:inline;
+        width: 70%;
+        height: 30px;
+        font-size: 14px;
+        padding: 12px 20px 12px 20px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+        margin-left:12px;
+    }
+    .plant-card{
+        max-height: none;
+        overflow-y: none;
+    }
     .mobileindex{
         display: block;
         background: #eeeeee;
@@ -22,7 +48,7 @@ html{
         height: 55px;
         background: #1F262D;
     }
-    .valvcontrol, .page-title1, .showseed{
+    .valvcontrol, .page-title1, .showseed, .bar-mobile, .show-meter{
         display: none;
     }
     .topbar{
@@ -59,6 +85,36 @@ html{
     .page-title2, .plant {
         display: inline;
     }
+    
+    .delete-bar {
+        display: block;
+        position: fixed;
+        height: 100px;
+        top: 101%;
+        background: #FF5666;
+        color: #FFFFFF;
+        line-height: 50px;
+        transition: top 0.5s;
+        text-align: center;
+        width: 100%;
+        font-size: 16px;
+    }
+    /*.btn-group {*/
+    /*    position: relative;*/
+    /*    width: 100%;*/
+    /*}*/
+    /*.plant-dropdown {*/
+    /*    position: relative;*/
+    /*    width: 50%;*/
+    /*}*/
+    
+    .plant-dropdown-items {
+        max-height: 200px;
+        overflow-y: scroll;
+        /*width: calc(100% - );*/
+        /*webkit-transform: translate3d(-20px, 0px, 0px);*/
+    }
+    
   .card-hover {
     webkit-transform: translateY(-4px) scale(1.01);
     -moz-transform: translateY(-4px) scale(1.01);
