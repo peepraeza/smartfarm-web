@@ -35,8 +35,10 @@ Category of plants that are created by users
 class Compost(models.Model):
     plant_id = models.IntegerField()
     compost_type = models.CharField(max_length=30)
+    compost_total = models.IntegerField(validators=MinValueValidator(0)) 
+    compost_unit = models.CharField(max_length=30)
     compost_date = models.DateTimeField(default=timezone.now)
     create_record_timestamp = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
-        return self.status
+        return self.compost_type

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from models import Plant, Vegetable, Compost
-from post_data import parse_keys, Plant_keys,parse_keys2, Plant_keys2
+from post_data import parse_keys, Plant_keys,parse_keys2, parse_keys3
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -215,7 +215,15 @@ def add_plant(request):
     
 def add_compost(request):
     if request.method == "POST":
-        print(str(request.POST.get("p_id")))
+        time = str(request.POST.get("compost-date")) 
+        c_date = datetime.strptime(time, '%d/%m/%Y')
+        p_id = request.POST.get("p_id")
+        c_type = request.POST.get("compost-type")
+        c_total = request.POST.get("compost-total")
+        c_unit = request.POST.get("compost-unit")
+        parsed_val = parse_keys3(p_id, c_date, c_type, c_total, c_unit)
+        _c = Compost(**parsed_val)
+        _c.save()
     return redirect("/")
     
 def del_vegetable(request):

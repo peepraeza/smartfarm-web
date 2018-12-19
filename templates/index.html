@@ -349,7 +349,7 @@
                                         </div>
                                         <div class="ml-auto">
                                             <div class="tetx-right" style="margin-bottom: 10px;">
-                                                <button id="compost-{{ p.id }}" type="button" class="btn btn-cyan btn-sm compost-button" value="{{ p.id }}" data-toggle="modal" data-target="#add-compost-modal" >ใส่ปุ๋ย</button> 
+                                                <button type="button" class="btn btn-cyan btn-sm compost-button" value="{{ p.id }}" data-toggle="modal" data-target="#add-compost-modal" >ใส่ปุ๋ย</button> 
                                             </div>
                                             <div class="tetx-right">
                                                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#keep-plant-modal">เก็บเกี่ยว</button> 
@@ -358,7 +358,7 @@
                                         </div>
                                         <div class="tetx-right">
                                             <form id="delete-form" action="/plant/delete/" method="post">
-                                                <input type="hidden" id="plant-id" name="delete-id" value="{{ p.id }}">
+                                                <input type="hidden" name="delete-id" value="{{ p.id }}">
                                                 <button type="submit" class="close" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -366,7 +366,6 @@
                                             </form>
                                         </div>
                                     </li>
-                                    <input type="hidden" id="plant-id" value="">
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -543,7 +542,7 @@
             </div>
         </div>
     </div>
-    <!--popup keep plant-->
+    <!--popup add compost-->
     <div class="modal fade" id="add-compost-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -561,11 +560,11 @@
                             </div>
                             <div class="col-8">
                                 <div class="btn-group">
-                                    <button type="button" id="ch-compost" class="btn btn-primary dropdown-toggle compost-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="">ชนิด A</button>
+                                    <button type="button" id="ch-compost" class="btn btn-primary dropdown-toggle compost-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="A">A</button>
                                     <ul class="dropdown-menu compost-dropdown-items">
-                                        <li><a class="dropdown-item compost-item" name="ชนิด A" href="#">ชนิด A</a></li>
-                                        <li><a class="dropdown-item compost-item" name="ชนิด B" href="#">ชนิด B</a></li>
-                                        <li><a class="dropdown-item compost-item" name="ชนิด C" href="#">ชนิด C</a></li>
+                                        <li><a class="dropdown-item compost-item" name="A" href="#">ชนิด A</a></li>
+                                        <li><a class="dropdown-item compost-item" name="B" href="#">ชนิด B</a></li>
+                                        <li><a class="dropdown-item compost-item" name="C" href="#">ชนิด C</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -576,14 +575,14 @@
                                 <h5>จำนวนปุ๋ย:</h5>
                             </div>
                             <div class="col-4">
-                                <input class="form-control" name="total-compost" type="number">
+                                <input class="form-control" name="compost-total" type="number">
                             </div>
                             <div class="col-4">
                                 <div class="btn-group">
-                                    <button type="button" id="ch-add-compost" class="btn btn-primary dropdown-toggle compost-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">กิโลกรัม</button>
+                                    <button type="button" id="ch-add-compost" class="btn btn-primary dropdown-toggle compost-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="กิโลกรัม">กิโลกรัม</button>
                                     <ul class="dropdown-menu compost-dropdown-items">
-                                        <li><a class="dropdown-item add-compost-item" name="กิโลกรัม" href="#" value="kg">กิโลกรัม</a></li>
-                                        <li><a class="dropdown-item add-compost-item" name="กรัม" href="#" value="g">กรัม</a></li>
+                                        <li><a class="dropdown-item add-compost-item" name="กิโลกรัม" href="#">กิโลกรัม</a></li>
+                                        <li><a class="dropdown-item add-compost-item" name="กรัม" href="#">กรัม</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -598,9 +597,10 @@
                             </div>
                         </div>
                         </br>
-                        <input type="hidden" name="p_id" value="" >
-                        <input type="hidden" name="compost-type" value="" >
-                        <input type="hidden" name="compost-date" value="" >
+                        <input type="hidden" id="p_id" name="p_id" value="" >
+                        <input type="hidden" id="compost-type" name="compost-type" value="" >
+                        <input type="hidden" id="compost-date" name="compost-date" value="" >
+                        <input type="hidden" id="compost-unit" name="compost-unit" value="" >
                         {% csrf_token %}
                     </form>
                 </div>
@@ -751,7 +751,7 @@
             thaiyear: true              
         }).datepicker("setDate", "0"); 
         $(".compost-button").click(function(){
-            $("#plant-id").val($(this).val())
+            $("#p_id").val($(this).val())
         })
         $("#submit-plant").click(function(){
             $("#plant-type").val($("#ch-plant").val())
@@ -760,11 +760,10 @@
             $("#plant-form").submit()
         })
         $("#submit-compost").click(function(){
-            $("#p_id").val($("#plant-id").val())
-            $("#compost_date").val($("#inputdatepicker-compost").val())
-            $("#compost_type").val($("#ch-compost").val())
-            alert($("#p_id").val())
-            // $("#plant-form").submit()
+            $("#compost-date").val($("#inputdatepicker-compost").val())
+            $("#compost-type").val($("#ch-compost").val())
+            $("#compost-unit").val($("#ch-add-compost").val())
+            $("#compost-form").submit()
         })
         document.getElementById("tab2").classList.remove('active');
         document.getElementById("tab3").classList.remove('active');

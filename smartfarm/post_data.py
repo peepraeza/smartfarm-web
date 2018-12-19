@@ -22,14 +22,11 @@ def parse_keys2(p_type, time, sensor):
     _res_dict["is_harvested"] = False
     return _res_dict
     
-################# ITEMS TO PARSE #################
-    
-Plant_keys2 = {
-    # "plant-type": ["plant_type", str],
-    "start-plant-timestamp": ["start_plant_timestamp", str],
-    "end-plant-timestamp": ["end_plant_timestamp", str],
-    "is-harvested": ["is_harvested", str],
-    # "sensor": ["sensor", str],
-}
-
-##################################################
+def parse_keys3(p_id, c_date, c_type, c_total, c_unit):
+    _res_dict = {}
+    _res_dict["plant_id"] = int(p_id)
+    _res_dict["compost_date"] = str(c_date)
+    _res_dict["compost_type"] = str(c_type)
+    _res_dict["compost_total"] = int(c_total)
+    _res_dict["compost_unit"] = str(c_unit).encode('utf-8')
+    return _res_dict
